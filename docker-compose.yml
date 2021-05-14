@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+    php:
+        build: .docker
+        volumes:
+            - .docker/php/vhosts:/etc/apache2/sites-enabled
+            - .docker/php/apache2.conf:/etc/apache2/apache2.conf
+            - .:/var/www/guestbook
+        ports:
+            - 80:80
+        networks:
+            - dev
+
+    db:
+        image: mysql
+        environment:
+            command: --default-authentication-plugin=mysql_native_password
+            MYSQL_DATABASE: guestbook
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            MYSQL_USER: guestbook
+            MYSQL_PASSWORD: 1234
+        networks:
+            - dev
+
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
+        networks:
+            - dev
+
+networks:
+    dev:
