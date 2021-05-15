@@ -16,6 +16,8 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 RUN nvm install node
 
+RUN npm install -g npm
+
 WORKDIR /var/www/guestbook
 
 EXPOSE 80
