@@ -6,7 +6,15 @@
         <title>Guestbook</title>
     </head>
     <body>
-        <div id="app"></div>
+        <div id="app">
+            <nav>
+                <router-link :to="{name:'home'}">Home</router-link>
+                <router-link :to="{name:'post.index'}">Posts</router-link>
+            </nav>
+            <main>
+                <router-view></router-view>
+            </main>
+        </div>
         <script src="js/app.js"></script>
     </body>
 </html>
