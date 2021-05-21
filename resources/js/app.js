@@ -16,11 +16,40 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.withCredentials = true;
+window.axios = axios;
 
 const store = new Vuex.Store({
 	state: {
 		logged: false
+	},
+	mutations: {
+		SET_LOGGED(state, logged) {
+			state.logged = logged;
+		}
+	},
+	actions: {
+		async login(context, email, password) {
+			try {
+				const response = await axios.post('/api/admin/login', {
+					email,
+					password
+            	});
+				context.commit('SET_LOGGED', true);
+			}
+			catch (ex) {
+			}
+		},
+		async logout(context) {
+			try {
+				const response = await axios.post('/api/admin/logout');
+				context.commit('SET_LOGGED', false);
+			}
+			catch (ex) {
+			}
+		}
 	}
 });
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/admin')->group(function() {
-    Route::post('/login', [\App\Http\Controllers\LoginController::class, 'login']);
-    Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout']);
+Route::prefix('admin')->group(function() {
+    Route::post('/login', [LoginController::class, 'login']);
+
+    Route::middleware('auth')->group(function() {
+        Route::post('/logout', [LoginController::class, 'logout']);
+    });
 });
