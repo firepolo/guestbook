@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/hello', function(Request $request) {
-    return response()->json('Hello!', 200);
+Route::prefix('/admin')->group(function() {
+    Route::post('/login', [\App\Http\Controllers\LoginController::class, 'login']);
+    Route::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout']);
 });

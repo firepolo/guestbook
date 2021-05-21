@@ -16,6 +16,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;
 
 const store = new Vuex.Store({
 	state: {

@@ -2039,6 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_9__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_10__.default);
 vue__WEBPACK_IMPORTED_MODULE_9__.default.use(vuex__WEBPACK_IMPORTED_MODULE_11__.default);
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest';
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.withCredentials) = true;
 var store = new vuex__WEBPACK_IMPORTED_MODULE_11__.default.Store({
   state: {
     logged: false
