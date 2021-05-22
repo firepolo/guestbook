@@ -11,13 +11,18 @@
 export default {
     data() {
         return {
-            email: '',
-            password: ''
+            email: 'admin@test.test',
+            password: '1234'
         };
     },
     methods: {
         connect() {
-            this.$store.dispatch('login');
+            this.$store.dispatch('login', {
+                email: this.email,
+                password: this.password
+            }).then((response => {
+                this.$router.replace({ name: 'admin' });
+            }));
         }
     }
 }

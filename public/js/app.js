@@ -1884,7 +1884,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  computed: {
+    logged: function logged() {
+      return this.$store.state.logged;
+    }
+  },
+  methods: {
+    logout: function logout() {
+      this.$store.dispatch('logout');
+      this.$router.replace({
+        name: 'admin.login'
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -1911,13 +1926,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      email: '',
-      password: ''
+      email: 'admin@test.test',
+      password: '1234'
     };
   },
   methods: {
     connect: function connect() {
-      this.$store.dispatch('login');
+      var _this = this;
+
+      this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password
+      }).then(function (response) {
+        _this.$router.replace({
+          name: 'admin'
+        });
+      });
     }
   }
 });
@@ -2073,8 +2097,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 vue__WEBPACK_IMPORTED_MODULE_10__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_11__.default);
 vue__WEBPACK_IMPORTED_MODULE_10__.default.use(vuex__WEBPACK_IMPORTED_MODULE_12__.default);
 (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest';
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["Content-Type"]) = 'application/json';
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common.Accept) = 'application/json';
+(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["X-CSRF-TOKEN"]) = document.querySelector('meta[name="csrf-token"]').content;
 (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.withCredentials) = true;
 window.axios = (axios__WEBPACK_IMPORTED_MODULE_1___default());
 var store = new vuex__WEBPACK_IMPORTED_MODULE_12__.default.Store({
@@ -2087,7 +2110,17 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_12__.default.Store({
     }
   },
   actions: {
-    login: function login(context, email, password) {
+    login: function login(context, credential) {
+      return new Promise(function (resolve, reject) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/admin/login', credential).then(function (response) {
+          context.commit('SET_LOGGED', true);
+          resolve();
+        })["catch"](function (error) {
+          reject();
+        });
+      });
+    },
+    logout: function logout(context) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -2096,14 +2129,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_12__.default.Store({
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/admin/login', {
-                  email: email,
-                  password: password
-                });
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/admin/logout');
 
               case 3:
                 response = _context.sent;
-                context.commit('SET_LOGGED', true);
+                context.commit('SET_LOGGED', false);
                 _context.next = 9;
                 break;
 
@@ -2117,35 +2147,6 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_12__.default.Store({
             }
           }
         }, _callee, null, [[0, 7]]);
-      }))();
-    },
-    logout: function logout(context) {
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.prev = 0;
-                _context2.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/admin/logout');
-
-              case 3:
-                response = _context2.sent;
-                context.commit('SET_LOGGED', false);
-                _context2.next = 9;
-                break;
-
-              case 7:
-                _context2.prev = 7;
-                _context2.t0 = _context2["catch"](0);
-
-              case 9:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, null, [[0, 7]]);
       }))();
     }
   }
@@ -2167,7 +2168,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_11__.default({
     name: 'admin',
     path: '/admin',
     beforeEnter: function beforeEnter(to, from, next) {
-      console.log(store.state.logged, to.name);
       if (!store.state.logged && 'admin.login' !== to.name) next({
         name: 'admin.login'
       });else next();
@@ -3791,7 +3791,27 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("h1", [_vm._v("ADMIN INDEX")]), _vm._v(" "), _c("router-view")],
+    [
+      _c("h1", [_vm._v("ADMIN INDEX")]),
+      _vm._v(" "),
+      _vm.logged
+        ? _c(
+            "a",
+            {
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.logout($event)
+                }
+              }
+            },
+            [_vm._v("Logout")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("router-view")
+    ],
     1
   )
 }

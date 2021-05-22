@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +20,11 @@ Route::prefix('admin')->group(function() {
 
     Route::middleware('auth')->group(function() {
         Route::post('/logout', [LoginController::class, 'logout']);
+
+        Route::prefix('post')->group(function() {
+            Route::post('/create', [PostController::class, 'create']);
+            Route::put('/edit/{id}', [PostController::class, 'edit']);
+            Route::delete('/delete/{id}', [PostController::class, 'delete']);
+        });
     });
 });

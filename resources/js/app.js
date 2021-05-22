@@ -16,8 +16,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.headers.common['Content-Type'] = 'application/json';
-axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').content;
 axios.defaults.withCredentials = true;
 window.axios = axios;
 
@@ -31,16 +30,15 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
-		async login(context, email, password) {
-			try {
-				const response = await axios.post('/api/admin/login', {
-					email,
-					password
-            	});
-				context.commit('SET_LOGGED', true);
-			}
-			catch (ex) {
-			}
+		login(context, credential) {
+			return new Promise((resolve, reject) => {
+				axios.post('/api/admin/login', credential).then(response => {
+					context.commit('SET_LOGGED', true);
+					resolve();
+				}).catch(error => {
+					reject();
+				});
+			});
 		},
 		async logout(context) {
 			try {
@@ -74,7 +72,6 @@ const router = new VueRouter({
 			name: 'admin',
 			path: '/admin',
 			beforeEnter(to, from, next) {
-				console.log(store.state.logged, to.name);
 				if (!store.state.logged && 'admin.login' !== to.name) next({ name: 'admin.login' });
 				else next();
 			},
