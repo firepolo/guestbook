@@ -1,6 +1,8 @@
 <template>
     <div>
         <h1>ADMIN LOGIN</h1>
+        <div class="card">
+        </div>
         <div><input type="email" placeholder="E-mail" v-model.trim="email"></div>
         <div><input type="password" placeholder="Password" v-model="password"></div>
         <button @click.prevent="connect">Connect</button>
