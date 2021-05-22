@@ -11,11 +11,10 @@
     </head>
     <body>
         <div id="app">
-            <nav>
-                <router-link :to="{name:'home'}">Home</router-link>
-                <router-link :to="{name:'post.index'}">Posts</router-link>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <router-view name="navbar"></router-view>
             </nav>
-            <main>
+            <main class="container pt-4">
                 <router-view></router-view>
             </main>
         </div>
