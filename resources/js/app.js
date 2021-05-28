@@ -26,7 +26,13 @@ window.axios = axios;
 
 const store = new Vuex.Store({
 	state: {
-		logged: false
+		logged: false,
+		posts: []
+	},
+	getters: {
+		posts(state) {
+			return state.posts;
+		}
 	},
 	mutations: {
 		SET_LOGGED(state, logged) {
@@ -34,6 +40,14 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
+		async fetchPosts(context) {
+			try {
+				const response = await axios.get('/api/post');
+				console.log(response);
+			}
+			catch (ex) {
+			}
+		},
 		login(context, credential) {
 			return new Promise((resolve, reject) => {
 				axios.post('/api/admin/login', credential).then(response => {
