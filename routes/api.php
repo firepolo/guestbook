@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,11 @@ use App\Http\Controllers\Admin\PostController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('post')->group(function() {
+    Route::get('/', [PostController::class, 'index']);
+    Route::get('/{id}', [PostController::class, 'show']);
+});
 
 Route::prefix('admin')->group(function() {
     Route::post('/login', [LoginController::class, 'login']);
