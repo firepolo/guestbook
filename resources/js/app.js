@@ -83,10 +83,6 @@ const router = new VueRouter({
 		},
 		{
 			path: '/admin',
-			beforeEnter(to, from, next) {
-				if (!store.state.logged && 'admin.login' !== to.name) next({ name: 'admin.login' });
-				else next();
-			},
 			components: {
 				default: Parent,
 				navbar: AdminNavbar,
@@ -120,6 +116,11 @@ const router = new VueRouter({
 			]
 		}
 	]
+});
+
+router.beforeEach((to, from, next) => {
+	if (to.name.startsWith('admin') && !store.state.logged && 'admin.login' !== to.name) next({ name: 'admin.login' });
+	else next();
 });
 
 const app = new Vue({

@@ -2271,11 +2271,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_14__.default({
     }]
   }, {
     path: '/admin',
-    beforeEnter: function beforeEnter(to, from, next) {
-      if (!store.state.logged && 'admin.login' !== to.name) next({
-        name: 'admin.login'
-      });else next();
-    },
     components: {
       "default": _views_Parent_vue__WEBPACK_IMPORTED_MODULE_4__.default,
       navbar: _components_AdminNavbar_vue__WEBPACK_IMPORTED_MODULE_3__.default
@@ -2302,6 +2297,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_14__.default({
       component: _views_admin_post_Edit_vue__WEBPACK_IMPORTED_MODULE_12__.default
     }]
   }]
+});
+router.beforeEach(function (to, from, next) {
+  if (to.name.startsWith('admin') && !store.state.logged && 'admin.login' !== to.name) next({
+    name: 'admin.login'
+  });else next();
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_13__.default({
   el: '#app',
