@@ -20,7 +20,6 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').content;
 axios.defaults.withCredentials = true;
 window.axios = axios;
 
@@ -37,13 +36,16 @@ const store = new Vuex.Store({
 	mutations: {
 		SET_LOGGED(state, logged) {
 			state.logged = logged;
+		},
+		SET_POSTS(state, posts) {
+			state.posts = posts;
 		}
 	},
 	actions: {
 		async fetchPosts(context) {
 			try {
-				const response = await axios.get('/api/post');
-				console.log(response);
+				const response = await axios.get('/api/post/');
+				context.commit('SET_POSTS', response.data);
 			}
 			catch (ex) {
 			}

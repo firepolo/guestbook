@@ -2099,7 +2099,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    postContent: function postContent(content) {
+      return content.substr(0, 32) + '...';
+    }
+  },
+  computed: {
+    posts: function posts() {
+      return this.$store.getters.posts;
+    }
+  },
+  mounted: function mounted() {
+    this.$store.dispatch('fetchPosts');
+  }
+});
 
 /***/ }),
 
@@ -2120,7 +2154,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    postContent: function postContent(content) {
+      return content.substr(0, 32) + '...';
+    }
+  },
+  computed: {
+    posts: function posts() {
+      return this.$store.getters.posts;
+    }
+  },
+  mounted: function mounted() {
+    this.$store.dispatch('fetchPosts');
+  }
+});
 
 /***/ }),
 
@@ -2195,7 +2261,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 vue__WEBPACK_IMPORTED_MODULE_13__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_14__.default);
 vue__WEBPACK_IMPORTED_MODULE_13__.default.use(vuex__WEBPACK_IMPORTED_MODULE_15__.default);
 (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest';
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["X-CSRF-TOKEN"]) = document.querySelector('meta[name="csrf-token"]').content;
 (axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.withCredentials) = true;
 window.axios = (axios__WEBPACK_IMPORTED_MODULE_1___default());
 var store = new vuex__WEBPACK_IMPORTED_MODULE_15__.default.Store({
@@ -2211,6 +2276,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_15__.default.Store({
   mutations: {
     SET_LOGGED: function SET_LOGGED(state, logged) {
       state.logged = logged;
+    },
+    SET_POSTS: function SET_POSTS(state, posts) {
+      state.posts = posts;
     }
   },
   actions: {
@@ -2223,11 +2291,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_15__.default.Store({
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/post');
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get('/api/post/');
 
               case 3:
                 response = _context.sent;
-                console.log(response);
+                context.commit('SET_POSTS', response.data);
                 _context.next = 9;
                 break;
 
@@ -4588,14 +4656,60 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("h1", [_vm._v("ADMIN POST INDEX")]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.posts, function(post, index) {
+          return _c("tr", { key: post.id }, [
+            _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(index))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(post.title))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.postContent(post.content)))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(post.image))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.edit }
+                },
+                [_vm._v("Edit")]
+              )
+            ])
+          ])
+        }),
+        0
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("ADMIN POST INDEX")])])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Content")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Action")])
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -4620,14 +4734,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("h1", [_vm._v("POST INDEX")]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.posts, function(post, index) {
+          return _c("tr", { key: post.id }, [
+            _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(index))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(post.title))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.postContent(post.content)))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(post.image))])
+          ])
+        }),
+        0
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("POST INDEX")])])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Content")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Image")])
+      ])
+    ])
   }
 ]
 render._withStripped = true
